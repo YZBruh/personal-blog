@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { ADMIN_PASSWORD } from "@/lib/auth";
+import { isAuthenticated } from "@/lib/auth";
 import { SITE_CONFIG } from "@/config/config";
 import fs from "fs/promises";
 import path from "path";
@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   try {
     const { password } = await request.json();
 
-    if (password !== ADMIN_PASSWORD) {
+    if (!isAuthenticated(password)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -21,19 +21,23 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: true,
         message: "Config file already exists",
-        existed: true
+        existed: true,
       });
     } catch {
       // File doesn't exist, create it
     }
 
     // Create the config.json file with current SITE_CONFIG
-    await fs.writeFile(configPath, JSON.stringify(SITE_CONFIG, null, 2), "utf8");
+    await fs.writeFile(
+      configPath,
+      JSON.stringify(SITE_CONFIG, null, 2),
+      "utf8",
+    );
 
     return NextResponse.json({
       success: true,
       message: "Config file initialized successfully",
-      existed: false
+      existed: false,
     });
   } catch (error) {
     console.error("Config initialization error:", error);
@@ -44,15 +48,8 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    const { searchParams } = new URL(request.url);
-    const password = searchParams.get('password');
-
-    if (password !== ADMIN_PASSWORD) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     const configPath = path.join(process.cwd(), "public/config.json");
 
     try {
