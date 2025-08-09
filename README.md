@@ -64,7 +64,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 5. Configure your environment variables:
 ```env
-NEXT_PUBLIC_SITE_URL=your-site-url
+SITE_URL=your-site-url
 ADMIN_PASSWORD=your-secure-password
 ```
 
