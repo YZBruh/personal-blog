@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { Post } from "@/lib/blog";
@@ -39,7 +39,7 @@ const itemVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      type: "spring",
+      type: "spring" as const,
       stiffness: 100,
     },
   },
@@ -59,7 +59,7 @@ export function ClientBlogContent({
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [canRefresh, setCanRefresh] = useState(true);
 
-  const fetchLatestPosts = async () => {
+  const fetchLatestPosts = useCallback(async () => {
     if (!canRefresh || isRefreshing) return;
 
     try {
@@ -83,12 +83,12 @@ export function ClientBlogContent({
       setIsLoading(false);
       setTimeout(() => setCanRefresh(true), REFRESH_COOLDOWN);
     }
-  };
+  }, [canRefresh, isRefreshing]);
 
   useEffect(() => {
     const intervalId = setInterval(fetchLatestPosts, 30000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [fetchLatestPosts]);
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
@@ -206,7 +206,7 @@ export function ClientBlogContent({
           className="overflow-x-auto scrollbar-hide"
         >
           <div className="flex flex-nowrap md:flex-wrap gap-3 py-4">
-            {allTags.map((tag, i) => (
+            {allTags.map((tag) => (
               <motion.button
                 key={tag}
                 variants={itemVariants}

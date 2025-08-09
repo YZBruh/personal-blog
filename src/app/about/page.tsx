@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { SITE_CONFIG } from "@/config/config";
+import { useSiteConfig } from "@/hooks/useSiteConfig";
 import CustomSocialLinks from "@/components/CustomSocialLinks";
 import Link from "next/link";
 
@@ -14,7 +14,7 @@ const RenderContent = ({ content }: { content: string }) => {
       {parts.map((part, index) => {
         const linkMatch = part.match(/\[(.*?)\]\((.*?)\)/);
         if (linkMatch) {
-          const [_, text, url] = linkMatch;
+          const [, text, url] = linkMatch;
           return (
             <Link
               key={index}
@@ -34,6 +34,7 @@ const RenderContent = ({ content }: { content: string }) => {
 };
 
 export default function AboutPage() {
+  const { config: SITE_CONFIG } = useSiteConfig();
   return (
     <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
       <div className="space-y-8">

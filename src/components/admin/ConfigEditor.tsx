@@ -26,7 +26,7 @@ export function ConfigEditor({
   const handleSave = async () => {
     try {
       setError(null);
-      await onSaveAction(configState);
+      onSaveAction(configState);
       toast({
         title: "Success",
         description: "Configuration saved successfully",
@@ -54,14 +54,14 @@ export function ConfigEditor({
     });
   };
 
-  const handleChange = (path: string, value: any) => {
+  const handleChange = (path: string, value: unknown) => {
     setConfigState((prev) => {
       const newState = { ...prev };
       const keys = path.split(".");
-      let current = newState;
+      let current: Record<string, unknown> = newState;
 
       for (let i = 0; i < keys.length - 1; i++) {
-        current = current[keys[i]];
+        current = current[keys[i]] as Record<string, unknown>;
       }
 
       current[keys[keys.length - 1]] = value;
@@ -69,7 +69,7 @@ export function ConfigEditor({
     });
   };
 
-  const renderField = (key: string, value: any, path: string = "") => {
+  const renderField = (key: string, value: unknown, path: string = "") => {
     const currentPath = path ? `${path}.${key}` : key;
 
     if (value === null || value === undefined) {
@@ -114,7 +114,10 @@ export function ConfigEditor({
   const renderFieldsForCategory = (fields: string[]) => {
     return fields.map((field) => {
       if (field in configState) {
-        return renderField(field, configState[field]);
+        return renderField(
+          field,
+          (configState as Record<string, unknown>)[field],
+        );
       }
       return null;
     });

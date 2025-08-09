@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,10 +9,12 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { X, Eye, EyeOff } from "@/components/Icons";
 import { SITE_CONFIG } from "@/config/config";
-import type { AdminState, BlogPost } from "@/types/admin";
+import { invalidateConfigCache } from "@/hooks/useSiteConfig";
+import type { AdminState } from "@/types/admin";
 import { PostsList } from "@/components/admin/PostsList";
 import { ConfigEditor } from "@/components/admin/ConfigEditor";
 import { Documentation } from "@/components/admin/Documentation";
+import { ConfigStatus } from "@/components/admin/ConfigStatus";
 
 export default function AdminPage() {
   const [state, setState] = useState<AdminState>({
@@ -22,26 +24,11 @@ export default function AdminPage() {
     success: null,
     config: SITE_CONFIG,
     posts: [],
+    configInitialized: false,
   });
   const [password, setPassword] = useState("");
   const [activeTab, setActiveTab] = useState("config");
   const [showPassword, setShowPassword] = useState(false);
-
-  useEffect(() => {
-    if (state.isAuthenticated) {
-      fetchPosts();
-    }
-  }, [state.isAuthenticated]);
-
-  useEffect(() => {
-    if (state.success) {
-      const timeout = setTimeout(() => {
-        setState((prev) => ({ ...prev, success: null }));
-      }, 5000);
-      setState((prev) => ({ ...prev, successTimeout: timeout }));
-      return () => clearTimeout(timeout);
-    }
-  }, [state.success]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,7 +72,7 @@ export default function AdminPage() {
       const response = await fetch("/api/admin/posts");
       const data = await response.json();
       setState((prev) => ({ ...prev, posts: data.posts }));
-    } catch (error) {
+    } catch {
       setState((prev) => ({
         ...prev,
         error: "Failed to fetch posts",
@@ -95,7 +82,52 @@ export default function AdminPage() {
     }
   };
 
-  const handleSaveConfig = async (updatedConfig: Record<string, any>) => {
+  const checkConfigInit = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `/api/admin/init-config?password=${password}`,
+      );
+      const data = await response.json();
+      setState((prev) => ({ ...prev, configInitialized: data.exists }));
+    } catch (error) {
+      console.warn("Failed to check config initialization:", error);
+    }
+  }, [password]);
+
+  const initializeConfig = async () => {
+    try {
+      setState((prev) => ({ ...prev, isLoading: true, error: null }));
+      const response = await fetch("/api/admin/init-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setState((prev) => ({
+          ...prev,
+          configInitialized: true,
+          success: data.message,
+        }));
+      } else {
+        throw new Error(data.error || "Failed to initialize config");
+      }
+    } catch (error) {
+      setState((prev) => ({
+        ...prev,
+        error:
+          error instanceof Error
+            ? error.message
+            : "Failed to initialize config",
+      }));
+    } finally {
+      setState((prev) => ({ ...prev, isLoading: false }));
+    }
+  };
+
+  const handleSaveConfig = async (updatedConfig: Record<string, unknown>) => {
     try {
       setState((prev) => ({
         ...prev,
@@ -104,19 +136,30 @@ export default function AdminPage() {
         success: null,
       }));
 
+      // Initialize config.json if it doesn't exist
+      if (!state.configInitialized) {
+        await initializeConfig();
+      }
+
       const response = await fetch("/api/admin/config", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password, config: updatedConfig }),
       });
 
-      if (!response.ok) throw new Error("Failed to save configuration");
+      const data = await response.json();
+
+      if (!response.ok)
+        throw new Error(data.error || "Failed to save configuration");
 
       setState((prev) => ({
         ...prev,
         config: updatedConfig,
-        success: "Configuration saved successfully!",
+        success: data.message || "Configuration saved successfully!",
       }));
+
+      // Invalidate the config cache to force reload of new config
+      invalidateConfigCache();
     } catch (error) {
       setState((prev) => ({
         ...prev,
@@ -127,6 +170,23 @@ export default function AdminPage() {
       setState((prev) => ({ ...prev, isLoading: false }));
     }
   };
+
+  useEffect(() => {
+    if (state.isAuthenticated) {
+      fetchPosts();
+      checkConfigInit();
+    }
+  }, [state.isAuthenticated, checkConfigInit]);
+
+  useEffect(() => {
+    if (state.success) {
+      const timeout = setTimeout(() => {
+        setState((prev) => ({ ...prev, success: null }));
+      }, 5000);
+      setState((prev) => ({ ...prev, successTimeout: timeout }));
+      return () => clearTimeout(timeout);
+    }
+  }, [state.success]);
 
   if (!state.isAuthenticated) {
     return (
@@ -303,6 +363,40 @@ export default function AdminPage() {
                 exit={{ opacity: 0, y: -20 }}
                 className="space-y-6"
               >
+                <ConfigStatus
+                  onRefresh={() => checkConfigInit()}
+                  isLoading={state.isLoading}
+                />
+                {!state.configInitialized && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="backdrop-blur-xs bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 rounded-lg p-6"
+                  >
+                    <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                      Initialize Runtime Configuration
+                    </h3>
+                    <p className="text-blue-700 dark:text-blue-300 mb-4">
+                      The runtime configuration file hasn&apos;t been created
+                      yet. This file allows you to modify settings in production
+                      without rebuilding the application.
+                    </p>
+                    <Button
+                      onClick={initializeConfig}
+                      disabled={state.isLoading}
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      {state.isLoading ? (
+                        <>
+                          <LoadingSpinner className="mr-2" />
+                          Initializing...
+                        </>
+                      ) : (
+                        "Initialize Config File"
+                      )}
+                    </Button>
+                  </motion.div>
+                )}
                 <ConfigEditor
                   config={state.config}
                   onSaveAction={handleSaveConfig}

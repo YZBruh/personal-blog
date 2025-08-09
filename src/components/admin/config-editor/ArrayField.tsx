@@ -8,10 +8,10 @@ import { ARRAY_TEMPLATES, CONFIG_FIELD_TYPES } from "./types";
 
 interface ArrayFieldProps {
   path: string;
-  value: any[];
+  value: unknown[];
   fieldKey: string;
   description?: string;
-  onChangeAction: (path: string, value: any) => void;
+  onChangeAction: (path: string, value: unknown) => void;
 }
 
 const MotionButton = motion.create(Button);
@@ -31,7 +31,6 @@ export function ArrayField({
   path,
   value,
   fieldKey,
-  description,
   onChangeAction,
 }: ArrayFieldProps) {
   return (
@@ -87,7 +86,7 @@ export function ArrayField({
 
       <div className="space-y-4">
         <AnimatePresence mode="popLayout">
-          {value.map((item: any, index: number) => (
+          {value.map((item: unknown, index: number) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, height: 0, scale: 0.8 }}
@@ -100,117 +99,142 @@ export function ArrayField({
               }}
               className="pl-4 border-l-2 border-border"
             >
-              {typeof item === "object" ? (
+              {typeof item === "object" && item !== null ? (
                 <div className="space-y-2">
-                  {Object.entries(item).map(([itemKey, itemValue]) => (
-                    <div key={itemKey} className="space-y-1">
-                      <label className="text-xs font-medium capitalize">
-                        {itemKey.replace(/([A-Z])/g, " $1").trim()}
-                      </label>
-                      {Array.isArray(itemValue) ? (
-                        <div className="flex flex-wrap gap-2">
-                          {itemValue.map((tag, tagIndex) => (
-                            <motion.div
-                              key={tagIndex}
-                              initial={{ scale: 0.8, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              className="flex items-center gap-1"
-                            >
-                              <Input
-                                value={tag}
-                                onChange={(
-                                  e: React.ChangeEvent<HTMLInputElement>,
-                                ) => {
-                                  const newArray = [...value];
-                                  newArray[index] = {
-                                    ...newArray[index],
-                                    [itemKey]: [
-                                      ...newArray[index][itemKey].slice(
-                                        0,
-                                        tagIndex,
-                                      ),
-                                      e.target.value,
-                                      ...newArray[index][itemKey].slice(
-                                        tagIndex + 1,
-                                      ),
-                                    ],
-                                  };
-                                  onChangeAction(path, newArray);
-                                }}
-                                className="text-sm w-32"
-                              />
-                              <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => {
-                                  const newArray = [...value];
-                                  newArray[index] = {
-                                    ...newArray[index],
-                                    [itemKey]: newArray[index][itemKey].filter(
-                                      (_: any, i: number) => i !== tagIndex,
-                                    ),
-                                  };
-                                  onChangeAction(path, newArray);
-                                }}
+                  {Object.entries(item as Record<string, unknown>).map(
+                    ([itemKey, itemValue]) => (
+                      <div key={itemKey} className="space-y-1">
+                        <label className="text-xs font-medium capitalize">
+                          {itemKey.replace(/([A-Z])/g, " $1").trim()}
+                        </label>
+                        {Array.isArray(itemValue) ? (
+                          <div className="flex flex-wrap gap-2">
+                            {itemValue.map((tag, tagIndex) => (
+                              <motion.div
+                                key={tagIndex}
+                                initial={{ scale: 0.8, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                className="flex items-center gap-1"
                               >
-                                ×
-                              </Button>
-                            </motion.div>
-                          ))}
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
+                                <Input
+                                  value={tag}
+                                  onChange={(
+                                    e: React.ChangeEvent<HTMLInputElement>,
+                                  ) => {
+                                    const newArray = [...value];
+                                    const currentItem = newArray[
+                                      index
+                                    ] as Record<string, unknown>;
+                                    newArray[index] = {
+                                      ...currentItem,
+                                      [itemKey]: [
+                                        ...(
+                                          currentItem[itemKey] as unknown[]
+                                        ).slice(0, tagIndex),
+                                        e.target.value,
+                                        ...(
+                                          currentItem[itemKey] as unknown[]
+                                        ).slice(tagIndex + 1),
+                                      ],
+                                    };
+                                    onChangeAction(path, newArray);
+                                  }}
+                                  className="text-sm w-32"
+                                />
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => {
+                                    const newArray = [...value];
+                                    const currentItem = newArray[
+                                      index
+                                    ] as Record<string, unknown>;
+                                    newArray[index] = {
+                                      ...currentItem,
+                                      [itemKey]: (
+                                        currentItem[itemKey] as unknown[]
+                                      ).filter(
+                                        (_: unknown, i: number) =>
+                                          i !== tagIndex,
+                                      ),
+                                    };
+                                    onChangeAction(path, newArray);
+                                  }}
+                                >
+                                  ×
+                                </Button>
+                              </motion.div>
+                            ))}
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                const newArray = [...value];
+                                const currentItem = newArray[index] as Record<
+                                  string,
+                                  unknown
+                                >;
+                                newArray[index] = {
+                                  ...currentItem,
+                                  [itemKey]: [
+                                    ...(currentItem[itemKey] as unknown[]),
+                                    "",
+                                  ],
+                                };
+                                onChangeAction(path, newArray);
+                              }}
+                            >
+                              Add Tag
+                            </Button>
+                          </div>
+                        ) : itemKey === "description" ? (
+                          <Textarea
+                            value={itemValue as string}
+                            onChange={(
+                              e: React.ChangeEvent<HTMLTextAreaElement>,
+                            ) => {
                               const newArray = [...value];
+                              const currentItem = newArray[index] as Record<
+                                string,
+                                unknown
+                              >;
                               newArray[index] = {
-                                ...newArray[index],
-                                [itemKey]: [...newArray[index][itemKey], ""],
+                                ...currentItem,
+                                [itemKey]: e.target.value,
                               };
                               onChangeAction(path, newArray);
                             }}
-                          >
-                            Add Tag
-                          </Button>
-                        </div>
-                      ) : itemKey === "description" ? (
-                        <Textarea
-                          value={itemValue as string}
-                          onChange={(
-                            e: React.ChangeEvent<HTMLTextAreaElement>,
-                          ) => {
-                            const newArray = [...value];
-                            newArray[index] = {
-                              ...newArray[index],
-                              [itemKey]: e.target.value,
-                            };
-                            onChangeAction(path, newArray);
-                          }}
-                          className="min-h-[100px] text-sm"
-                        />
-                      ) : (
-                        <Input
-                          value={itemValue as string}
-                          onChange={(
-                            e: React.ChangeEvent<HTMLInputElement>,
-                          ) => {
-                            const newArray = [...value];
-                            newArray[index] = {
-                              ...newArray[index],
-                              [itemKey]: e.target.value,
-                            };
-                            onChangeAction(path, newArray);
-                          }}
-                          className="text-sm"
-                        />
-                      )}
-                    </div>
-                  ))}
+                            className="min-h-[100px] text-sm"
+                          />
+                        ) : (
+                          <Input
+                            value={itemValue as string}
+                            onChange={(
+                              e: React.ChangeEvent<HTMLInputElement>,
+                            ) => {
+                              const newArray = [...value];
+                              const currentItem = newArray[index] as Record<
+                                string,
+                                unknown
+                              >;
+                              newArray[index] = {
+                                ...currentItem,
+                                [itemKey]: e.target.value,
+                              };
+                              onChangeAction(path, newArray);
+                            }}
+                            className="text-sm"
+                          />
+                        )}
+                      </div>
+                    ),
+                  )}
                 </div>
               ) : (
                 <Input
-                  value={item}
+                  value={item as string}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const newArray = [...value];
                     newArray[index] = e.target.value;
@@ -231,7 +255,7 @@ export function ArrayField({
                   size="sm"
                   onClick={() => {
                     const newArray = value.filter(
-                      (_: any, i: number) => i !== index,
+                      (_: unknown, i: number) => i !== index,
                     );
                     onChangeAction(path, newArray);
                   }}

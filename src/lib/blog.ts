@@ -80,7 +80,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       readingTime,
       tags: data.tags || [],
     } as Post;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
@@ -116,7 +116,7 @@ export async function createPost(
     const filePath = path.join(BLOG_DIR, `${post.slug}.md`);
 
     // Create frontmatter object
-    const frontmatter: Record<string, any> = {
+    const frontmatter: Record<string, unknown> = {
       title: post.title,
       date: post.date,
       description: post.description,
@@ -137,7 +137,7 @@ export async function createPost(
 
     // Write the file
     await fs.writeFile(filePath, fileContent, "utf8");
-    ("");
+
     return true;
   } catch (error) {
     console.error("Error creating post:", error);

@@ -130,64 +130,62 @@ export function BlogPostContent({ post, headings }: BlogPostContentProps) {
               [rehypeHighlight, { detect: true, ignoreMissing: true }],
             ]}
             components={{
-              h1: ({ node, ...props }) => (
+              h1: ({ ...props }) => (
                 <h1
                   {...props}
                   className="scroll-mt-24 text-4xl font-bold my-8"
                 />
               ),
-              h2: ({ node, ...props }) => (
+              h2: ({ ...props }) => (
                 <h2
                   {...props}
                   className="scroll-mt-24 text-3xl font-bold my-6"
                 />
               ),
-              h3: ({ node, ...props }) => (
+              h3: ({ ...props }) => (
                 <h3
                   {...props}
                   className="scroll-mt-24 text-2xl font-bold my-5"
                 />
               ),
-              h4: ({ node, ...props }) => (
+              h4: ({ ...props }) => (
                 <h4
                   {...props}
                   className="scroll-mt-24 text-xl font-bold my-4"
                 />
               ),
-              h5: ({ node, ...props }) => (
+              h5: ({ ...props }) => (
                 <h5
                   {...props}
                   className="scroll-mt-24 text-lg font-bold my-3"
                 />
               ),
-              h6: ({ node, ...props }) => (
+              h6: ({ ...props }) => (
                 <h6
                   {...props}
                   className="scroll-mt-24 text-base font-bold my-2"
                 />
               ),
-              p: ({ node, ...props }) => (
-                <p {...props} className="my-4 leading-8" />
-              ),
-              ul: ({ node, ...props }) => (
+              p: ({ ...props }) => <p {...props} className="my-4 leading-8" />,
+              ul: ({ ...props }) => (
                 <ul
                   {...props}
                   className="my-6 ml-6 list-disc [&>li]:mt-3 marker:text-primary"
                 />
               ),
-              ol: ({ node, ...props }) => (
+              ol: ({ ...props }) => (
                 <ol
                   {...props}
                   className="my-6 ml-6 list-decimal [&>li]:mt-3 marker:text-primary"
                 />
               ),
-              blockquote: ({ node, ...props }) => (
+              blockquote: ({ ...props }) => (
                 <blockquote
                   {...props}
                   className="my-6 border-l-4 border-primary bg-secondary/20 p-4 rounded-r-lg italic"
                 />
               ),
-              table: ({ node, ...props }) => (
+              table: ({ ...props }) => (
                 <div className="overflow-x-auto my-8">
                   <table
                     {...props}
@@ -195,16 +193,16 @@ export function BlogPostContent({ post, headings }: BlogPostContentProps) {
                   />
                 </div>
               ),
-              th: ({ node, ...props }) => (
+              th: ({ ...props }) => (
                 <th
                   {...props}
                   className="border border-slate-200 px-4 py-3 text-left font-bold bg-secondary/30"
                 />
               ),
-              td: ({ node, ...props }) => (
+              td: ({ ...props }) => (
                 <td {...props} className="border border-slate-200 px-4 py-3" />
               ),
-              a: ({ node, ...props }) => (
+              a: ({ ...props }) => (
                 <a
                   {...props}
                   className="text-primary hover:text-primary/80 underline decoration-2 underline-offset-2 transition-colors"
@@ -223,7 +221,13 @@ export function BlogPostContent({ post, headings }: BlogPostContentProps) {
                   }
                 />
               ),
-              pre: ({ node, ...props }) => (
+              img: ({ ...props }) => (
+                <img
+                  {...props}
+                  className="my-8 rounded-xl shadow-lg max-w-full h-auto"
+                />
+              ),
+              pre: ({ ...props }) => (
                 <pre
                   {...props}
                   className="my-8 overflow-x-auto rounded-xl bg-secondary/50 p-6"

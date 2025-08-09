@@ -6,7 +6,7 @@ export async function GET() {
   try {
     const posts = await getAllPosts();
     return NextResponse.json({ posts });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Failed to fetch posts" },
       { status: 500 },
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Failed to create post" },
       { status: 500 },

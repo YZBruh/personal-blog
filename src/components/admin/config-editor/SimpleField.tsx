@@ -7,22 +7,21 @@ import { useState } from "react";
 
 interface SimpleFieldProps {
   path: string;
-  value: any;
+  value: unknown;
   fieldKey: string;
   description?: string;
-  onChange: (path: string, value: any) => void;
+  onChange: (path: string, value: unknown) => void;
 }
 
 export function SimpleField({
   path,
   value,
   fieldKey,
-  description,
   onChange,
 }: SimpleFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
 
-  const shouldUseTextarea = (key: string, value: any) => {
+  const shouldUseTextarea = (key: string, value: unknown) => {
     return (
       typeof value === "string" &&
       (value.includes("\n") ||
@@ -72,15 +71,19 @@ export function SimpleField({
       {typeof value === "boolean" ? (
         <Select
           value={value.toString()}
-          onChange={(e) => onChange(path, e.target.value === "true")}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            onChange(path, e.target.value === "true")
+          }
         >
           <option value="true">True</option>
           <option value="false">False</option>
         </Select>
       ) : shouldUseTextarea(fieldKey, value) ? (
         <Textarea
-          value={value}
-          onChange={(e) => onChange(path, e.target.value)}
+          value={value as string}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            onChange(path, e.target.value)
+          }
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           className={`font-mono transition-all duration-200 ${
@@ -90,8 +93,10 @@ export function SimpleField({
       ) : (
         <Input
           type={typeof value === "number" ? "number" : "text"}
-          value={value}
-          onChange={(e) => onChange(path, e.target.value)}
+          value={value as string | number}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onChange(path, e.target.value)
+          }
           className="font-mono"
         />
       )}

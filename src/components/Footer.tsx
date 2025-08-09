@@ -2,13 +2,14 @@
 import React from "react";
 import * as Icons from "@/components/Icons";
 import Link from "next/link";
-import { SITE_CONFIG } from "@/config/config";
+import { useSiteConfig } from "@/hooks/useSiteConfig";
 import CustomSocialLinks from "./CustomSocialLinks";
 import { FooterLoading } from "./loading";
 import { motion } from "framer-motion";
 
 export default function Footer() {
   const [loading, setLoading] = React.useState(true);
+  const { config: SITE_CONFIG } = useSiteConfig();
 
   React.useEffect(() => {
     setLoading(false);
@@ -55,7 +56,7 @@ export default function Footer() {
             <CustomSocialLinks
               platforms={["all"]}
               className="flex-wrap gap-4"
-              iconClassName="h-6 w-6 hover:scale-110 transition-transform duration-300"
+              iconClassName="hover:scale-110 transition-transform duration-300"
               direction="row"
             />
           </motion.div>
@@ -79,7 +80,7 @@ export default function Footer() {
                       ? React.createElement(
                           Icons[
                             link.icon as keyof typeof Icons
-                          ] as React.ComponentType<any>,
+                          ] as React.ComponentType<{ className?: string }>,
                           {
                             className: "h-4 w-4",
                           },

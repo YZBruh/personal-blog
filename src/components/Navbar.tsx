@@ -14,26 +14,20 @@ import {
 } from "@/components/ui/sheet";
 import {
   NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
-import { SITE_CONFIG } from "@/config/config";
-import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { useSiteConfig } from "@/hooks/useSiteConfig";
+
 import { NavbarLoading } from "./loading";
 import { NavigationItem } from "./NavigationItem";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
   const [open, setOpen] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
   const pathname = usePathname();
+  const { config: SITE_CONFIG, isLoading } = useSiteConfig();
 
-  React.useEffect(() => {
-    setLoading(false);
-  }, []);
-
-  if (loading) {
+  if (isLoading) {
     return <NavbarLoading />;
   }
 

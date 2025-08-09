@@ -20,7 +20,8 @@ export default async function BlogPostPage({
             Post Not Found
           </h1>
           <p className="text-muted-foreground mb-8 text-base sm:text-lg max-w-lg mx-auto">
-            The blog post you're looking for doesn't exist or has been removed.
+            The blog post you&apos;re looking for doesn&apos;t exist or has been
+            removed.
           </p>
           <Button
             asChild

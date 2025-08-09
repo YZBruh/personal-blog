@@ -4,8 +4,8 @@ export interface ConfigFieldType {
 }
 
 export interface ConfigEditorProps {
-  config: Record<string, any>;
-  onSaveAction: (updatedConfig: Record<string, any>) => void;
+  config: Record<string, unknown>;
+  onSaveAction: (updatedConfig: Record<string, unknown>) => void;
   disabled: boolean;
 }
 

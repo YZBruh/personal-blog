@@ -1,6 +1,6 @@
 export interface ConfigField {
   key: string;
-  value: any;
+  value: unknown;
   type: "string" | "array" | "object" | "number" | "boolean";
   description?: string;
 }
@@ -20,7 +20,8 @@ export interface AdminState {
   isLoading: boolean;
   error: string | null;
   success: string | null;
-  config: Record<string, any>;
+  config: Record<string, unknown>;
   posts: BlogPost[];
+  configInitialized: boolean;
   successTimeout?: NodeJS.Timeout;
 }

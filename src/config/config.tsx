@@ -40,8 +40,8 @@ export const SITE_CONFIG = {
       description:
         "A modern, responsive portfolio website built with Next.js and Tailwind CSS. Features a clean design, dark mode support, and integrated blog functionality.",
       image: "/personal-website-project.svg",
-      github: "https://github.com/MrErenK/personal-template",
-      demo: "https://demo.mrerenk.tech",
+      github: "https://github.com/MrErenK/personal-blog",
+      demo: "https://erensprojects.web.tr",
       languages: ["Tailwind CSS", "Next.JS", "React"],
     },
   ],
@@ -57,11 +57,6 @@ export const SITE_CONFIG = {
       platform: "Mail",
       username: "eren@erensprojects.web.tr",
       baseUrl: "mailto:",
-    },
-    {
-      platform: "Discord",
-      username: "464788707333898240",
-      baseUrl: "https://discordapp.com/users/",
     },
     {
       platform: "Telegram",

@@ -2,10 +2,12 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { SITE_CONFIG } from "@/config/config";
+import { useSiteConfig } from "@/hooks/useSiteConfig";
 import { Button } from "@/components/ui/button";
 
 export function ClientHeroSection() {
+  const { config: SITE_CONFIG } = useSiteConfig();
+
   return (
     <section className="container relative min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 md:px-8 lg:px-12 py-12 md:py-24 lg:py-36">
       <div className="mx-auto max-w-5xl flex flex-col items-center text-center space-y-8 md:space-y-10 lg:space-y-12">
@@ -52,8 +54,8 @@ export function ClientHeroSection() {
                 <Button
                   key={index}
                   asChild
-                  size={(button.size as any) || "lg"}
-                  variant={(button.variant as any) || "default"}
+                  size={(button.size as never) || "lg"}
+                  variant={(button.variant as never) || "default"}
                   className="w-full sm:w-auto transform hover:scale-105 transition-transform duration-200"
                 >
                   <Link href={button.href}>{button.text}</Link>

@@ -53,11 +53,11 @@ export function Documentation() {
               key={variant}
               className="p-4 rounded-lg border bg-card space-y-2"
             >
-              <Button variant={variant as any} className="w-full">
+              <Button variant={variant as never} className="w-full">
                 {variant}
               </Button>
               <p className="text-sm text-muted-foreground text-center">
-                variant="{variant}"
+                variant=&quot;{variant}&quot;
               </p>
             </div>
           ))}
@@ -71,13 +71,13 @@ export function Documentation() {
           {buttonSizes.map((size) => (
             <div key={size} className="p-4 rounded-lg border bg-card space-y-2">
               <Button
-                size={size as any}
+                size={size as never}
                 className={size === "icon" ? "aspect-square" : "w-full"}
               >
                 {size === "icon" ? <Icons.Plus /> : size}
               </Button>
               <p className="text-sm text-muted-foreground text-center">
-                size="{size}"
+                size=&quot;{size}&quot;
               </p>
             </div>
           ))}

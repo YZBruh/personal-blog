@@ -4,9 +4,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, Github } from "@/components/Icons";
-import { SITE_CONFIG } from "@/config/config";
+import { useSiteConfig } from "@/hooks/useSiteConfig";
 
 export default function ProjectsPage() {
+  const { config: SITE_CONFIG } = useSiteConfig();
+
   return (
     <div className="container max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 py-12 sm:py-16">
       <div className="space-y-12">
