@@ -84,15 +84,13 @@ export default function AdminPage() {
 
   const checkConfigInit = useCallback(async () => {
     try {
-      const response = await fetch(
-        `/api/admin/init-config?password=${password}`,
-      );
+      const response = await fetch("/api/admin/init-config");
       const data = await response.json();
       setState((prev) => ({ ...prev, configInitialized: data.exists }));
     } catch (error) {
       console.warn("Failed to check config initialization:", error);
     }
-  }, [password]);
+  }, []);
 
   const initializeConfig = async () => {
     try {
