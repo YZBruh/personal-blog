@@ -39,9 +39,9 @@ export default function ProjectsPage() {
             animate={{ opacity: 1 }}
             className="grid gap-8 md:gap-10"
           >
-            {SITE_CONFIG.projects.map((project, index) => (
+            {(SITE_CONFIG.projects || []).map((project, index) => (
               <motion.div
-                key={index}
+                key={project.title}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -52,19 +52,25 @@ export default function ProjectsPage() {
                 whileHover={{ scale: 1.02 }}
                 className="group relative overflow-hidden rounded-2xl border bg-card hover:bg-accent/40 transition-all duration-500 hover:shadow-xl"
               >
-                <div className="flex flex-col sm:flex-row-reverse">
-                  <div className="w-full sm:w-2/5 relative aspect-video sm:aspect-auto sm:min-h-[240px]">
-                    <Image
-                      src={project.image}
-                      alt={project.title}
-                      fill
-                      sizes="(max-width: 640px) 100vw, 40vw"
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                      priority={index < 2}
-                    />
-                  </div>
+                <div
+                  className={`flex flex-col ${project.image ? "sm:flex-row-reverse" : ""}`}
+                >
+                  {project.image && (
+                    <div className="w-full sm:w-2/5 relative aspect-video sm:aspect-auto sm:min-h-[240px]">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        sizes="(max-width: 640px) 100vw, 40vw"
+                        className="object-cover transition-transform duration-500 group-hover:scale-110"
+                        priority={index < 2}
+                      />
+                    </div>
+                  )}
 
-                  <div className="w-full sm:w-3/5 p-6 sm:p-8 space-y-5">
+                  <div
+                    className={`w-full ${project.image ? "sm:w-3/5" : ""} p-6 sm:p-8 space-y-5`}
+                  >
                     <h3 className="text-2xl sm:text-3xl font-bold tracking-tight group-hover:text-primary transition-colors duration-300">
                       {project.title}
                     </h3>
