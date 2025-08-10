@@ -136,7 +136,7 @@ export const CONFIG_FIELD_TYPES: Record<string, ConfigFieldType> = {
   },
   "projects.*.image": {
     type: "string",
-    description: "URL of the project image",
+    description: "URL of the project image (optional)",
   },
   "projects.*.github": { type: "string", description: "GitHub repository URL" },
   "projects.*.demo": { type: "string", description: "Live demo URL" },
@@ -182,6 +182,7 @@ export const CONFIG_CATEGORIES = {
     description: "General website settings and information",
     fields: [
       "name",
+      "siteName",
       "navTitle",
       "footerTitle",
       "description",
