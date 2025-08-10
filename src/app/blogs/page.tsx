@@ -1,9 +1,10 @@
-import { SITE_CONFIG } from "@/config/config";
+import { loadConfigForServerSync } from "@/lib/server-config";
 import { getAllPosts } from "@/lib/blog";
 import { ClientBlogContent } from "./ClientBlogContent";
 
 export default async function BlogPage() {
   const posts = await getAllPosts();
+  const config = loadConfigForServerSync();
 
   return (
     <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
@@ -19,8 +20,8 @@ export default async function BlogPage() {
           </div>
         ) : (
           <ClientBlogContent
-            title={SITE_CONFIG.blogTitle}
-            description={SITE_CONFIG.blogDescription}
+            title={config.blogTitle}
+            description={config.blogDescription}
             posts={posts}
           />
         )}

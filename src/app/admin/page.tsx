@@ -8,8 +8,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { X, Eye, EyeOff } from "@/components/Icons";
-import { SITE_CONFIG } from "@/config/config";
-import { invalidateConfigCache } from "@/hooks/useSiteConfig";
+import { invalidateConfigCache, useSiteConfig } from "@/hooks/useSiteConfig";
 import type { AdminState } from "@/types/admin";
 import { PostsList } from "@/components/admin/PostsList";
 import { ConfigEditor } from "@/components/admin/ConfigEditor";
@@ -17,6 +16,8 @@ import { Documentation } from "@/components/admin/Documentation";
 import { ConfigStatus } from "@/components/admin/ConfigStatus";
 
 export default function AdminPage() {
+  const { config: SITE_CONFIG } = useSiteConfig();
+
   const [state, setState] = useState<AdminState>({
     isAuthenticated: false,
     isLoading: false,

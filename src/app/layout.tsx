@@ -1,19 +1,21 @@
 import { Geist } from "next/font/google";
+import { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { SITE_CONFIG } from "@/config/config";
-import { defaultMetadata } from "@/config/metadata";
+import { loadConfigForServerSync } from "@/lib/server-config";
+import { generateMetadata } from "@/config/metadata";
 import { Toaster } from "@/components/ui/toaster";
 
-const appleTitle = SITE_CONFIG.siteName;
+const config = loadConfigForServerSync();
+const appleTitle = config.siteName;
 
 const geist = Geist({
   subsets: ["latin"],
 });
 
-export const metadata = defaultMetadata;
+export const metadata: Metadata = generateMetadata(config);
 
 export default function RootLayout({
   children,

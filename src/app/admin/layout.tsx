@@ -1,10 +1,12 @@
 import { Metadata } from "next";
-import { SITE_CONFIG } from "@/config/config";
-import { defaultMetadata } from "@/config/metadata";
+import { loadConfigForServerSync } from "@/lib/server-config";
+import { generateMetadata } from "@/config/metadata";
+
+const config = loadConfigForServerSync();
 
 export const metadata: Metadata = {
-  ...defaultMetadata,
-  title: `Admin - ${SITE_CONFIG.name} | ${SITE_CONFIG.siteName}`,
+  ...generateMetadata(config),
+  title: `Admin - ${config.name} | ${config.siteName}`,
   description: "Site Configuration Management",
   robots: {
     index: false,

@@ -1,11 +1,13 @@
 import { Metadata } from "next";
-import { SITE_CONFIG } from "@/config/config";
-import { defaultMetadata } from "@/config/metadata";
+import { loadConfigForServerSync } from "@/lib/server-config";
+import { generateMetadata } from "@/config/metadata";
+
+const config = loadConfigForServerSync();
 
 export const metadata: Metadata = {
-  ...defaultMetadata,
-  title: `Projects - ${SITE_CONFIG.name} | ${SITE_CONFIG.siteName}`,
-  description: SITE_CONFIG.projectDescription,
+  ...generateMetadata(config),
+  title: `Projects - ${config.name} | ${config.siteName}`,
+  description: config.projectDescription,
 };
 
 export default function ProjectsLayout({
