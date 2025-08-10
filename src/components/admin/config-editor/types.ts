@@ -37,8 +37,14 @@ export const ARRAY_TEMPLATES = {
 
 export const CONFIG_FIELD_TYPES: Record<string, ConfigFieldType> = {
   // Basic Site Info
-  name: { type: "string", description: "Your name" },
-  siteName: { type: "string", description: "Name of your website" },
+  name: {
+    type: "string",
+    description: "Your name (requires rebuilding to update)",
+  },
+  siteName: {
+    type: "string",
+    description: "Name of your website (requires rebuilding to update)",
+  },
   navTitle: {
     type: "string",
     description: "Title shown in the navigation bar",
@@ -46,7 +52,8 @@ export const CONFIG_FIELD_TYPES: Record<string, ConfigFieldType> = {
   footerTitle: { type: "string", description: "Title shown in the footer" },
   description: {
     type: "string",
-    description: "Main description of your website",
+    description:
+      "Main description of your website (requires rebuilding to update)",
   },
   copyright: {
     type: "string",
