@@ -36,7 +36,7 @@ export function ClientRecentPosts({ posts }: ClientRecentPostsProps) {
             size="lg"
             className="text-lg hover:translate-x-1 transition-transform"
           >
-            <Link href="/blog">View all posts →</Link>
+            <Link href="/blogs">View all posts →</Link>
           </Button>
         </motion.div>
 
