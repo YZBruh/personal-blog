@@ -16,7 +16,7 @@ Student Number: **557**
 
 ---
 
-![Poster-2](/content/pictures/occupation-poster-2.jpeg)
+![Poster](/content/pictures/occupation-poster-2.jpeg)
 
 Name & Surname: **Hasan Keleş**\
 Grade: **11/C**\
@@ -26,7 +26,7 @@ Student Number: **556**
 
 ---
 
-![Poster-3](/content/pictures/occupation-poster-3.jpeg)
+![Poster](/content/pictures/occupation-poster-3.jpeg)
 
 Name & Surname: **Hamza Çağılcı**\
 Grade: **11/C**\
