@@ -1,7 +1,7 @@
 ---
 author: "Yağız Zengin"
 title: "Occupation Poster (For School)"
-description: "Poster (homework) about my target profession and my some friends."
+description: "Poster (homework) about my and some of friends' target profession."
 date: "30 September 2025"
 tags: ["School", "Career"]
 ---
