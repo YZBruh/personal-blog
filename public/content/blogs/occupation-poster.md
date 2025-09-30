@@ -8,8 +8,8 @@ tags: ["School", "Career"]
 
 ![Poster](/content/pictures/occupation-poster.png)
 
-Name & Surname: **Yağız Zengin**
-Grade: **11/D**
+Name & Surname: **Yağız Zengin**\
+Grade: **11/D**\
 Student Number: **557**
 
 **"I'm going to be a computer programmer."**
