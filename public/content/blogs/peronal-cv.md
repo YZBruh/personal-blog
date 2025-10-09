@@ -6,7 +6,7 @@ date: "9 October 2025"
 tags: ["School", "Career"]
 ---
 
-![CV](/content/pictures/my-peronal-cv.jpg)
+![CV](/content/pictures/my-personal-cv.jpg)
 
 Name & Surname: **Yağız Zengin**\
 Grade: **11/C**\
