@@ -21,3 +21,11 @@ Student Number: **557**
 Name & Surname: **Hamza Çağılcı**\
 Grade: **11/C**\
 Student Number: **537**
+
+---
+
+![CV](/content/pictures/personal-cv-3.jpg)
+
+Name & Surname: **Hasan Keleş**\
+Grade: **11/C**\
+Student Number: **557**
