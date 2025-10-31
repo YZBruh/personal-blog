@@ -42,4 +42,4 @@ yarn-error.log*
 next-env.d.ts
 
 # custom
-/public/config.json
+#/public/config.json
