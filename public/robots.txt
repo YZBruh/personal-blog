@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Sitemap URL
-Sitemap: https://erensprojects.web.tr/sitemap.xml
+Sitemap: https://web.yzbruh.space/sitemap.xml
