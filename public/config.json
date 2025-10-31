@@ -1,0 +1,109 @@
+{
+  "name": "Yağız",
+  "navTitle": "Yağız's Blog",
+  "footerTitle": "YZBruh",
+  "siteName": "Yağız's Blog",
+  "description": "This page is a corner to share my projects and information. The code for this page was written by mrerenk with ♥️!",
+  "copyright": "YZBruh. All rights not reserved. WHT!?",
+  "contactDescription": "Have a question or want to work together? Feel free to reach out!",
+  "email": "yagizzengin73@gmail.com",
+  "homeTitle": "Hello Visitor, I'm Yağız",
+  "homeDescription": "It's good to see you! And don't get too carried away with me!",
+  "heroButtons": [
+    {
+      "text": "Read Blogs",
+      "href": "/blogs",
+      "variant": "gradient",
+      "size": "lg"
+    },
+    {
+      "text": "View Projects",
+      "href": "/projects",
+      "variant": "gradient-secondary",
+      "size": "lg"
+    }
+  ],
+  "aboutTitle": "About Me",
+  "aboutDescription": "Learn more about me.",
+  "aboutContentTitle": "Hello! 👋",
+  "aboutContent": "I'm Yağız. I'm Linux and Android enthusiasts. I know C/C++, CMake, Make and Bash. I love them! I also have some projects :) You can find most of my work on [my GitHub](https://github.com/YZBruh).",
+  "aboutHeroImage": "/placeholder-about.svg",
+  "projectTitle": "Projects",
+  "projectDescription": "A showcase of my recent development projects.",
+  "projects": [
+    {
+      "title": "Partition Manager Tool",
+      "description": "A C++ project that lets you manipulate Android components, while also providing useful extra features. Now rewritten from scratch!",
+      "image": "/placeholder-project.svg",
+      "github": "https://github.com/ShawkTeam/pmt-renovated",
+      "demo": "",
+      "languages": [
+        "C/C++",
+        "CMake"
+      ]
+    }
+  ],
+  "blogTitle": "Blogs",
+  "blogDescription": "Information about projects, ideas, all sorts of things...",
+  "social": [
+    {
+      "platform": "Github",
+      "username": "YZBruh",
+      "baseUrl": "https://github.com/"
+    },
+    {
+      "platform": "Mail",
+      "username": "yagizzengin73@gmail.com",
+      "baseUrl": "mailto:"
+    },
+    {
+      "platform": "Telegram",
+      "username": "YZBruh",
+      "baseUrl": "https://t.me/"
+    }
+  ],
+  "navItems": [
+    {
+      "title": "About",
+      "href": "/about",
+      "icon": "User"
+    },
+    {
+      "title": "Blogs",
+      "href": "/blogs",
+      "icon": "Book"
+    },
+    {
+      "title": "Projects",
+      "href": "/projects",
+      "icon": "Code"
+    }
+  ],
+  "footerItems": [
+    {
+      "title": "About",
+      "href": "/about",
+      "icon": "User"
+    },
+    {
+      "title": "Blogs",
+      "href": "/blogs",
+      "icon": "Book"
+    },
+    {
+      "title": "Projects",
+      "href": "/projects",
+      "icon": "Code"
+    },
+    {
+      "title": "Admin",
+      "href": "/admin",
+      "icon": "Admin"
+    },
+    {
+      "title": "Source Code",
+      "href": "https://github.com/MrErenK/personal-blog",
+      "icon": "Github"
+    }
+  ]
+}
